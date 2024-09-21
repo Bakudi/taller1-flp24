@@ -44,9 +44,6 @@ comp−chip (in,out,circ)
 
 ;;constructores
 
-(define-type cable symbol)
-(define-type port symbol)
-
 (define (chip-or)
     (lambda (symbol)
   (list 'chip-or symbol)))
@@ -85,8 +82,11 @@ comp−chip (in,out,circ)
         (list 'comp-chip in out circ)
     ))
 
-(define circ_simple
-    (lambda ()
-    
-    
-    ))
+(define (circ_simple)
+    (lambda (in out chip)
+    (list 'simple-circuit in out chip))
+    )
+
+(define (circ-comp)
+  (lambda (circ lcircs in out)
+    (list 'circ-comp circ lcircs in out)))
