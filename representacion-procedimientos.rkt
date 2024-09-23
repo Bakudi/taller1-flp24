@@ -98,3 +98,41 @@ comp−chip (in,out,circ)
           [(eq? mensaje 'out) out]
           [(eq? mensaje 'circ) circ]
           [else (error "Mensaje desconocido" mensaje)])))
+
+;; Constructor de circuito simple
+(define (circ-simple in out chip)
+  (lambda (mensaje)
+    (cond [(eq? mensaje 'tipo) 'simple-circuit]
+          [(eq? mensaje 'in) in]
+          [(eq? mensaje 'out) out]
+          [(eq? mensaje 'chip) chip]
+          [else (error "Mensaje desconocido" mensaje)])))
+
+;; Constructor de circuito compuesto
+(define (circ-comp circ lcircs in out)
+  (lambda (mensaje)
+    (cond [(eq? mensaje 'tipo) 'circ-comp]
+          [(eq? mensaje 'circ) circ]
+          [(eq? mensaje 'lcircs) lcircs]
+          [(eq? mensaje 'in) in]
+          [(eq? mensaje 'out) out]
+          [else (error "Mensaje desconocido" mensaje)])))
+
+;; Observadores de chips primitivos
+(define or-chip (prim-chip chip-or 'A))
+(define not-chip (prim-chip chip-not 'B))
+(define xor-chip (prim-chip chip-xor 'C))
+
+;; Observadores de circuitos simples
+(define circuito-simple1 (circ-simple '(cable1 cable2) '(cable3 cable4) or-chip))
+(define circuito-simple2 (circ-simple '(cableA cableB) '(cableC cableD) not-chip))
+(define circuito-simple3 (circ-simple '(cablex cabley) '(cablew cablez) xor-chip))
+
+;; Observadores de chips compuestos
+(define chip1 (comp-chip '(port1 port2) '(port3 port4) circuito-simple1))
+(define chip2 (comp-chip '(portA portB) '(portC portD) circuito-simple2))
+(define chip3 (comp-chip '(portX portY) '(portW portZ) circuito-simple3))
+
+;; Observadores de circuitos complejos
+(define circuito-complejo1 (circ-comp circuito-simple1 (list circuito-simple2) '(ABD CFG) '(DBA GFC)))
+(define circuito-complejo2 (circ-comp circuito-simple3 (list circuito-simple2) '(XYZ JKL) '(ZYX LKJ)))
