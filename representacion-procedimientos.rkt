@@ -119,6 +119,103 @@ comp−chip (in,out,circ)
           [else ("Mensaje desconocido" mensaje)])))
 
 ;; Observadores de chips primitivos
+(define (chip-tipo chip)
+  (chip 'tipo))
+
+(define (chip-symbol chip)
+  (chip 'symbol))
+
+;; Observadores de circuitos simples
+(define (circ-simple-in circ)
+  (circ 'in))
+
+(define (circ-simple-out circ)
+  (circ 'out))
+
+(define (circ-simple-chip circ)
+  (circ 'chip))
+
+
+;; Función para imprimir cualquier tipo de circuito
+(define (imprimir-circuito circ)
+  (cond [(eq? (circ 'tipo) 'simple-circuit)
+         (imprimir-circuito-simple circ)]
+        [(eq? (circ 'tipo) 'circ-comp)
+         (imprimir-circuito-comp circ)]))
+
+;; Observadores de chips compuestos
+(define (comp-chip-in chip)
+  (chip 'in))
+
+(define (comp-chip-out chip)
+  (chip 'out))
+
+(define (comp-chip-circ chip)
+  (chip 'circ))
+
+;; Observadores de circuitos complejos
+(define (circ-comp-circ circ)
+  (circ 'circ))
+
+(define (circ-comp-lcircs circ)
+  (circ 'lcircs))
+
+(define (circ-comp-in circ)
+  (circ 'in))
+
+(define (circ-comp-out circ)
+  (circ 'out))
+
+;; Función para imprimir un chip primitivo
+(define (imprimir-chip chip)
+  (display "Chip tipo: ")
+  (display (chip-tipo chip))
+  (newline)
+  (display "Símbolo: ")
+  (display (chip-symbol chip))
+  (newline))
+
+  ;; Función para imprimir un chip compuesto
+(define (imprimir-comp-chip chip)
+  (display "Chip compuesto - Entradas: ")
+  (display (comp-chip-in chip))
+  (newline)
+  (display "Salidas: ")
+  (display (comp-chip-out chip))
+  (newline)
+  (display "Circuito: ")
+  (imprimir-circuito (comp-chip-circ chip))
+  (newline))
+
+  ;; Función para imprimir un circuito simple
+(define (imprimir-circuito-simple circ)
+  (display "Circuito simple - Entradas: ")
+  (display (circ-simple-in circ))
+  (newline)
+  (display "Salidas: ")
+  (display (circ-simple-out circ))
+  (newline)
+  (display "Chip: ")
+  (imprimir-chip (circ-simple-chip circ))
+  (newline))
+
+  ;; Función para imprimir un circuito compuesto
+(define (imprimir-circuito-comp circ)
+  (display "Circuito compuesto - Entradas: ")
+  (display (circ-comp-in circ))
+  (newline)
+  (display "Salidas: ")
+  (display (circ-comp-out circ))
+  (newline)
+  (display "Circuito principal: ")
+  (imprimir-circuito (circ-comp-circ circ))
+  (newline)
+  (display "Circuitos secundarios: ")
+  (for-each imprimir-circuito (circ-comp-lcircs circ))
+  (newline))
+
+
+;; Observadores de chips primitivos
 (define or-chip (prim-chip chip-or 'A))
 (define not-chip (prim-chip chip-not 'B))
 (define xor-chip (prim-chip chip-xor 'C))
@@ -128,7 +225,7 @@ comp−chip (in,out,circ)
 (define circuito-simple2 (circ-simple '(cableA cableB) '(cableC cableD) not-chip))
 (define circuito-simple3 (circ-simple '(cablex cabley) '(cablew cablez) xor-chip))
 
-;; Observadores de chips compuestos
+;; Observadores de chips
 (define chip1 (comp-chip '(port1 port2) '(port3 port4) circuito-simple1))
 (define chip2 (comp-chip '(portA portB) '(portC portD) circuito-simple2))
 (define chip3 (comp-chip '(portX portY) '(portW portZ) circuito-simple3))
@@ -136,3 +233,13 @@ comp−chip (in,out,circ)
 ;; Observadores de circuitos complejos
 (define circuito-complejo1 (circ-comp circuito-simple1 (list circuito-simple2) '(ABD CFG) '(DBA GFC)))
 (define circuito-complejo2 (circ-comp circuito-simple3 (list circuito-simple2) '(XYZ JKL) '(ZYX LKJ)))
+
+
+
+(imprimir-comp-chip chip1)
+(imprimir-comp-chip chip2)
+(imprimir-comp-chip chip3)
+(imprimir-circuito circuito-simple1)
+(imprimir-circuito circuito-simple2)
+(imprimir-circuito circuito-complejo1)
+(imprimir-circuito circuito-complejo2)
