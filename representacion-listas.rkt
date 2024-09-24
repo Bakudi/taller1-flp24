@@ -1,3 +1,4 @@
+;;Autores: Juan Camilo Gutierrez Viveros, 2159874. Andres Felipe Rojas, 2160328.
 #lang eopl
 
 #| gramatica
@@ -112,17 +113,3 @@ comp−chip (in,out,circ)
 
 (define circuito-complejo1 ((circ-comp) circuito-simple1 (list circuito-simple2) '(ABD CFG) '(DBA GFC)))
 (define circuito-complejo2 ((circ-comp) circuito-simple3 (list circuito-simple2) '(XYZ JKL) '(ZYX LKJ)))
-
-(display chip1)
-(newline)
-(display chip2)
-(newline)
-(display chip3)
-(newline)
-(display circuito-simple1)
-(newline)
-(display circuito-simple2)
-(newline)
-(display circuito-complejo1)
-(newline)
-(display circuito-complejo2)
